@@ -1,0 +1,65 @@
+﻿@model String
+@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+    ViewBag.Header = "Продажи по " + @Model.Substring(0, @Model.Length - 1);
+    ViewBag.PageId = "Dashboard";
+    ViewBag.Title = "Criteria";
+    var lowerModel = @Model.ToLower();
+    ViewBag.criteria = lowerModel;
+    var dataName = lowerModel == "sectors" ? "sector" : "product";
+    var preposition = lowerModel == "sectors" ? "in" : "of";
+}
+
+<div class="white">
+    <div class="content right-padding">
+        <div class="page">
+            <div class="layout-box">
+                @*@Html.Partial("_HeaderWithLegend", (string)ViewBag.Header)*@
+                <div class="hb-5">
+                    <div class="lb-7">
+                        <div class="performance-title indent criteria">Сумма продаж по дням (грн.)</div>
+                        <div class="indent line">
+                            <div class="parameters">
+                                Сегодня
+                                <div class="parameter" id="TodaySales">0</div>
+                            </div>
+                            <div class="parameters">
+                                Вчера
+                                <div class="parameter" id="YesterdaySales">0</div>
+                            </div>
+                            <div class="parameters">
+                                Прошлая неделя
+                                <div class="parameter" id="LastWeekSales">0</div>
+                            </div>
+                        </div>
+                        <div id="daySwitcher" class="switcher sector"></div>
+                        <div id="chart-@(lowerModel)sales" class="left-indent"></div>
+                    </div>
+                    <div class="lb-7">
+                        <div class="performance-title indent params-indent criteria">Сумма продаж по месяцам (тыс. грн.)</div>
+                        <div class="indent params-indent line">
+                            <div class="parameters">
+                                Этот месяц
+                                <div class="parameter" id="ThisMonthUnits">0</div>
+                            </div>
+                            <div class="parameters">
+                                Прошлый месяц
+                                <div class="parameter" id="LastMonthUnits">0</div>
+                            </div>
+                            <div class="parameters">
+                                С начала года
+                                <div class="parameter" id="YtdUnits">0</div>
+                            </div>
+                        </div>
+                        <div id="monthSwitcher" class="switcher sector month"></div>
+                        <div id="chart-@(lowerModel)units"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_DashboardBottom", lowerModel)
+

@@ -1,0 +1,57 @@
+﻿@model String
+@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+    ViewBag.Header = "Продажи";
+    ViewBag.PageId = "Sale";
+    ViewBag.Title = "Продажи";
+    var lowerModel = @Model.ToLower();
+    ViewBag.criteria = lowerModel;
+    var dataName = lowerModel == "sale";
+    var preposition = lowerModel == "sectors" ? "in" : "of";
+}
+
+
+<div class="white">
+    <div class="content right-padding">
+        <div class="page">
+            <div class="layout-box">
+                @*@Html.Partial("_HeaderWithLegend", (string)ViewBag.Header)*@
+                <div class="hb-5">
+                    <div class="lb-7">
+                        <div class="performance-title indent criteria">Просрочка (суммы)</div>
+                        <div class="indent line">
+                            <div class="parameters">
+                                Эта неделя
+                                <div class="parameter" id="balance">0</div>
+                            </div>
+                            <div class="parameters">
+                                Прошлая неделя
+                                <div class="parameter" id="balanceLast">0</div>
+                            </div>
+                        </div>
+                        <div id="balanceSwitcher" class="switcher sector"></div>
+                        <div id="chart-balancesum" class="left-indent"></div>
+                    </div>
+                    <div class="lb-7">
+                        <div class="performance-title indent params-indent criteria">Просрочка (кол-во точек)</div>
+                        <div class="indent params-indent line">
+                            <div class="parameters">
+                                Эта неделя
+                                <div class="parameter" id="count">0</div>
+                            </div>
+                            <div class="parameters">
+                                Прошлая неделя
+                                <div class="parameter" id="countLast">0</div>
+                            </div>
+                        </div>
+                        <div id="countSwitcher" class="switcher sector month"></div>
+                        <div id="chart-balancecount"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*@Html.Partial("_DashboardBottomBalance", lowerModel)*@
+

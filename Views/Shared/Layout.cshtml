@@ -1,0 +1,63 @@
+﻿@using System.Web.Optimization
+@{
+    BundleTable.EnableOptimizations = false;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Анализ продаж</title>
+
+    @Styles.Render(Dashboards.BundleConfig.SiteCssBundle)
+    @*@Styles.Render(Dashboards.BundleConfig.SiteLessBundle)*@
+
+    <!--[if lt IE 9]>
+    @Scripts.Render(Dashboards.BundleConfig.SiteJquery1Bundle)
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+    @Scripts.Render(Dashboards.BundleConfig.SiteJquery2Bundle)
+    <!--<![endif]-->
+    @Scripts.Render(Dashboards.BundleConfig.SiteJsBundle)
+
+    <script>
+        $(function () {
+            SaleViewer.criteria = "@(ViewBag.criteria)";
+            SaleViewer.baseApiUrl = "@VirtualPathUtility.ToAbsolute("~/api/")";
+        });
+    </script>
+    @Scripts.Render(Dashboards.BundleConfig.viewsBundles[ViewBag.Title.ToLower()])
+
+</head>
+<body id="salesviewer">
+    <div class="page-content-wrapper">
+        <div class="page-content-push"></div>
+        <div id="header">
+            <div class="content">
+                @*<a class="logo indent" href="~/"></a>*@
+
+                <div class="menu">
+                    <div id="menu"></div>
+
+                    @*<div id="openPopupButton">
+                        <a><span class="info-link">?</span></a>
+                    </div>*@
+
+                </div>
+                <script>
+                    var activePageId = "@ViewBag.PageId" || "@ViewBag.Title",
+                    topMenu = new TopMenu($("#menu"), activePageId, "@ViewBag.Header");
+                    topMenu.init();
+                </script>
+            </div>
+
+        </div>
+
+        @RenderBody()
+
+    </div>
+    <div id="footer">
+    </div>
+</body>
+</html>

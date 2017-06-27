@@ -1,0 +1,8 @@
+﻿namespace Dashboards.Models
+{
+    public class AnnualPerformanceDto {
+        public decimal YTDSales { get; set; }
+        public decimal ForecastSales { get; set; }
+        public decimal LastYearSales { get; set; }
+    }
+}

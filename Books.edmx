@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище BooksModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Books.dbo.historySales" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="historySales">
+          <Key>
+            <PropertyRef Name="id" />
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="week" Type="datetime" Nullable="false" />
+          <Property Name="group" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="suma" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rootGroup">
+          <Key>
+            <PropertyRef Name="code_group_wares" />
+          </Key>
+          <Property Name="code_group_wares" Type="int" Nullable="false" />
+          <Property Name="code_parent_group_wares" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="70" Nullable="false" />
+          <Property Name="parent" Type="int" Nullable="false" />
+          <Property Name="level" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="Хранилище BooksModelContainer">
+          <EntitySet Name="rootGroup" EntityType="Self.rootGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="historySales" EntityType="Self.historySales" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [historySales].[id] AS [id], 
+    [historySales].[date] AS [date], 
+    [historySales].[week] AS [week], 
+    [historySales].[group] AS [group], 
+    [historySales].[quantity] AS [quantity], 
+    [historySales].[suma] AS [suma]
+    FROM [dbo].[historySales] AS [historySales]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BooksModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="historySales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="group" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="suma" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="week" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="rootGroup" Relationship="BooksModel.historySalesrootGroup" FromRole="historySales" ToRole="rootGroup" />
+        </EntityType>
+        <EntityContainer Name="BooksEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="historySales" EntityType="Self.historySales" />
+          <EntitySet Name="rootGroups" EntityType="BooksModel.rootGroup" />
+          <AssociationSet Name="historySalesrootGroup" Association="BooksModel.historySalesrootGroup">
+            <End Role="historySales" EntitySet="historySales" />
+            <End Role="rootGroup" EntitySet="rootGroups" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="rootGroup">
+          <Key>
+            <PropertyRef Name="code_group_wares" />
+          </Key>
+          <Property Name="code_group_wares" Type="Int32" Nullable="false" />
+          <Property Name="code_parent_group_wares" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="parent" Type="Int32" Nullable="false" />
+          <Property Name="level" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="historySales" Relationship="BooksModel.historySalesrootGroup" FromRole="rootGroup" ToRole="historySales" />
+        </EntityType>
+        <Association Name="historySalesrootGroup">
+          <End Type="BooksModel.historySales" Role="historySales" Multiplicity="*" />
+          <End Type="BooksModel.rootGroup" Role="rootGroup" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="rootGroup">
+              <PropertyRef Name="code_group_wares" />
+            </Principal>
+            <Dependent Role="historySales">
+              <PropertyRef Name="group" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище BooksModelContainer" CdmEntityContainer="BooksEntities">
+          <EntitySetMapping Name="historySales">
+            <EntityTypeMapping TypeName="BooksModel.historySales">
+              <MappingFragment StoreEntitySet="historySales">
+                <ScalarProperty Name="week" ColumnName="week" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="group" ColumnName="group" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="suma" ColumnName="suma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rootGroups">
+            <EntityTypeMapping TypeName="BooksModel.rootGroup">
+              <MappingFragment StoreEntitySet="rootGroup">
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="parent" ColumnName="parent" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="code_parent_group_wares" ColumnName="code_parent_group_wares" />
+                <ScalarProperty Name="code_group_wares" ColumnName="code_group_wares" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
